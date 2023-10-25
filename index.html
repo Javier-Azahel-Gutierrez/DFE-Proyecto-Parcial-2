@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="../css/styles.css">
+    <title>Task's to manage R</title>
+</head>
+
+<body>
+    <header>
+        <a id="logo">
+            <img src="../assets/img/header/PlayNWinLogoWhite.png" title="Logo">
+        </a>
+
+    </header>
+
+    <main>
+        <h1>TASK's to MANAGE of JavieR Gutierrez </h1>
+        <h3>The way to not slack off</h3>
+        <section id="section-venta">
+
+            <button id="addSale" class="btn-action">Nueva Tarea</button>
+
+            <form id="filter-form">
+                <div id="filter-section">
+                    <label for="customer-name-field">Detalles del Task:</label>
+                    <input type="text" id="customer-name-field" class="form-field" required>
+                    <select id="videogame-filter" class="filter-field" required>
+                        <option value="" selected>Estado de la tarea</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="proceso">En proceso</option>
+                        <option value="finalizada">Finalizada</option>
+                    </select><br>
+                    <label for="sale-date-field">Fecha de Inicio:</label>
+                    <input type="date" id="sale-date-field" class="form-field" required>
+                    <label for="sale-date-field">Fecha limite:</label>
+                    <input type="date" id="sale-date-field" class="form-field" required>
+<br>
+                    <button type="submit" id="apply-filters">Agregar</button>
+                </div>
+            </form>
+
+            <br> <br>
+
+            <div class="table-container">
+                <table id="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID Tarea</th>
+                            <th>Task</th>
+                            <th>Fecha de Inicio</th>
+                            <th>Fecha limite</th>
+                            <th>Estado</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <!-- Aquí se generará la tabla dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="message">
+                <p>Esperando lista de tareas ...</p>
+            </div>
+        </section>
+
+        <div id="modal-background" class="modal-background"> </div>
+
+        <div id="modal" class="modal">
+            <h2>Editando Task</h2>
+
+            <form id="sale-form" class="form-section">
+
+                <label for="customer-name-field">Id del alumnoo:</label>
+                <input type="text" id="customer-name-field" class="form-field" required> <br>
+
+                <select id="videogame-name" class="form-field" type="checkbox" required>
+                    <!-- Llenaremos las opciones con datos consumidos desde una api  -->
+
+                    <option value="" selected>Estado de la tarea</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="proceso">En proceso</option>
+                    <option value="finalizada">Finalizada</option>
+
+                </select> <br>
+
+                <label for="sale-date-field">Fecha de Inicio:</label>
+                <input type="date" id="sale-date-field" class="form-field" required> <br>
+                
+                <label for="sale-date-field">Fecha Limite:</label>
+                <input type="date" id="sale-date-field" class="form-field" required> <br>
+
+                <button type="submit" class="btn-submit">Guardar</button>
+
+            </form>
+        </div>
+    </main>
+
+
+    <script src="../shared/util.js"></script>
+    <script src="../shared/fetch-api.js"></script>
+    <script src="script.js"></script>
+
+</body>
+
+</html>
