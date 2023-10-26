@@ -11,7 +11,7 @@
 <body>
     <header>
         <a id="logo">
-            <img src="../assets/img/header/PlayNWinLogoWhite.png" title="Logo">
+            <img src="https://cdn-icons-png.flaticon.com/128/2387/2387635.png" title="Logo" width=40px>
         </a>
 
     </header>
@@ -21,24 +21,37 @@
         <h3>The way to not slack off</h3>
         <section id="section-venta">
 
-            <button id="addSale" class="btn-action">Nueva Tarea</button>
+            <button id="newTask" class="btn-action">Nueva Tarea</button>
 
-            <form id="filter-form">
-                <div id="filter-section">
-                    <label for="customer-name-field">Detalles del Task:</label>
-                    <input type="text" id="customer-name-field" class="form-field" required>
-                    <select id="videogame-filter" class="filter-field" required>
+            <form id="add-form">
+                <div id="add-section">
+                    <label for="taskTitle">Titulo del Task:</label>
+                    <input type="text" id="taskField" class="add-field" required>
+                    <label for="taskDetail">Detalles del Task:</label>
+                    <input type="text" id="taskField" class="add-field" required> <br>
+                    <select id="addState" class="add-field" required>
                         <option value="" selected>Estado de la tarea</option>
                         <option value="pendiente">Pendiente</option>
-                        <option value="proceso">En proceso</option>
                         <option value="finalizada">Finalizada</option>
+                    </select>
+                    <select id="addPrioridad" class="add-field" required>
+                        <option value="" selected>Prioridad de la tarea</option>
+                        <option value="baja">Baja</option>
+                        <option value="media">Media</option>
+                        <option value="Alta">Alta</option>
+                    </select>
+                    <select id="addTag" class="add-field" required>
+                        <option value="" selected>Tag de la Tarea</option>
+                        <option value="dfe">DFE 2023-2</option>
+                        <option value="personal">Personal</option>
+                        <option value="escolar">Escolar</option>
+                        <option value="laboral">Laboral</option>
+                        <option value="otra">Otra</option>
                     </select><br>
-                    <label for="sale-date-field">Fecha de Inicio:</label>
-                    <input type="date" id="sale-date-field" class="form-field" required>
-                    <label for="sale-date-field">Fecha limite:</label>
-                    <input type="date" id="sale-date-field" class="form-field" required>
-<br>
-                    <button type="submit" id="apply-filters">Agregar</button>
+                    <label for="addLimitDate">Fecha limite:</label>
+                    <input type="date" id="addLimitDate" class="add-field" required>
+                    <br>
+                    <button type="submit" id="addTask" class="btn-action">Agregar</button>
                 </div>
             </form>
 
@@ -49,10 +62,12 @@
                     <thead>
                         <tr>
                             <th>ID Tarea</th>
-                            <th>Task</th>
+                            <th>Titulo</th>
+                            <th>Descripcion</th>
+                            <th>Estado</th>
+                            <th>Prioridad</th>
                             <th>Fecha de Inicio</th>
                             <th>Fecha limite</th>
-                            <th>Estado</th>
                             <th>Editar</th>
                             <th>Eliminar</th>
                         </tr>
@@ -72,26 +87,32 @@
         <div id="modal" class="modal">
             <h2>Editando Task</h2>
 
-            <form id="sale-form" class="form-section">
+            <form id="edit-form" class="form-section">
 
-                <label for="customer-name-field">Id del alumnoo:</label>
-                <input type="text" id="customer-name-field" class="form-field" required> <br>
+                <label for="editTitleTask">Titulo del Task: </label>
+                <input type="text" id="editTitleTask" class="form-field" required> <br>
+                <label for="editDetailTask">Detalles del Task: </label>
+                <input type="text" id="editDetailTask" class="form-field" required> <br>
 
-                <select id="videogame-name" class="form-field" type="checkbox" required>
-                    <!-- Llenaremos las opciones con datos consumidos desde una api  -->
-
+                <select id="taskStatus" class="form-field" type="checkbox" required>
                     <option value="" selected>Estado de la tarea</option>
                     <option value="pendiente">Pendiente</option>
-                    <option value="proceso">En proceso</option>
                     <option value="finalizada">Finalizada</option>
-
+                </select> <br>
+                <select id="taskPrioridad" class="form-field" type="checkbox" required>
+                    <option value="" selected>Prioridad de la tarea</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="finalizada">Finalizada</option>
+                </select> <br>
+                <select id="taskTag" class="form-field" type="checkbox" required>
+                    <option value="" selected>Tag de la tarea</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="finalizada">Finalizada</option>
                 </select> <br>
 
-                <label for="sale-date-field">Fecha de Inicio:</label>
-                <input type="date" id="sale-date-field" class="form-field" required> <br>
-                
-                <label for="sale-date-field">Fecha Limite:</label>
-                <input type="date" id="sale-date-field" class="form-field" required> <br>
+                <label for="editLimitDate">Fecha Limite:</label>
+                <input type="date" id="saeditLimitDate" class="form-field" required> <br>
 
                 <button type="submit" class="btn-submit">Guardar</button>
 
@@ -99,10 +120,6 @@
         </div>
     </main>
 
-
-    <script src="../shared/util.js"></script>
-    <script src="../shared/fetch-api.js"></script>
-    <script src="script.js"></script>
 
 </body>
 
