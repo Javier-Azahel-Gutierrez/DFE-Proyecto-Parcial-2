@@ -1,12 +1,14 @@
 import { fetchAPI } from "./shared/fetch-api.js";
 
-const result = await fetchAPI('tasks','GET');
+const tablaBody = document.getElementById('data-table-body');
+const result = await fetchAPI('tasks', 'GET');
+const formulario = document.getElementById('add-form');
 console.log(result);
 
 displayTasksTable(result);
 
 class Task {
-    constructor(title, description, completed, priority, tag, dueDate){
+    constructor(title, description, completed, priority, tag, dueDate) {
         this.title = title;
         this.description = description;
         this.completed = completed;
@@ -16,174 +18,175 @@ class Task {
     }
 }
 
-function mapAPIToTasks(data) {
-    return data.map(item => {
-        return new Task(
-            item.title,
-            item.description,
-            item.completed,
-            item.priority,
-            item.tag,
-            (new Date(item.dueDate)).toISOString().substring(0,10),
-        );
-    });
-}
+// Botones
+
+const guardar = document.getElementById('addTask');
+
+// listeners
+
+tablaBody.addEventListener('click', async (e) => {
+    const name = e.target.name;
+    const id = e.target.getAttribute('data-id');
+    if (name === 'eliminar') {
+        await deleteTask(id);
+    }
+    if (name==='editar') {
+        const result = await fetchAPI('tasks/'+id,'GET');
+        document.getElementById('editar').value = 'editar';
+        document.getElementById('id').value = id;
+        document.getElementById('taskTitle').value = result.title;
+        document.getElementById('taskDetail').value = result.description;
+        document.getElementById('addState').value = (result.completed)?'Finalizada':'Pendiente';
+        document.getElementById('addPrioridad').value = result.priority;
+        document.getElementById('addTag').value = result.tag;
+        document.getElementById('addLimitDate').value = result.dueDate;
+    }
+});
+
+guardar.addEventListener('click', (e) => {
+    e.preventDefault();
+    const id = document.getElementById('id');
+    const editar = document.getElementById('editar').value;
+    if (editar === 'editar') {
+        document.getElementById('editar').value = '';
+        processUpdateTask();
+        formulario.reset();
+        return;
+    }
+    processCreateTask();
+    formulario.reset();
+});
 
 //#region Table
 
-function displayTasksTable(tasks) {
-    const tablaBody = document.getElementById('data-table-body');
-
-    tasks.forEach(task => {
-        console.log(task);
-        const row = document.createElement('tr');
-        row.innerHTML = `
-        <td class="p-3">${task.id}</td>
-        <td class="p-3">${task.title}</td>
-        <td class="p-3">${task.decription}</td>
-        <td class="p-3">${task.completed}</td>
-        <td class="p-3">${task.proprity}</td>
-        <td class="p-3">${task.tag}</td>
-        <td class="p-3">${(new Date(task.dueDate)).toISOString().substring(0,10)}</td>
-        <td class="p-3"><button data=id=${task.id} class="bg-blue-500 hover:bg-blue-600 transition ease-in-out text-white py-1 px-3 rounded-md" name="editar">
-            Editar
-        </button></td>
-        <td class="p-3"><button data=id=${task.id} class="bg-red-500 hover:bg-red-600 transition ease-in-out text-white py-1 px-3 rounded-md" name="eliminar">
-            Elimin
-        ar</button></td>
-      `;
-        tablaBody.appendChild(row);
-    });
-    initEditTaskButtonHandler();
-    initDeleteSaleButtonHandler();
+function message(color, message) {
+    let mensaje = document.getElementById('message');
+    mensaje.getElementsByTagName('p')[0].innerHTML = message;
+    let messageClassList = mensaje.className.split(' ');
+    messageClassList.pop();
+    messageClassList.push(color);
+    mensaje.className = messageClassList.join(' ');
+    console.log(mensaje.className);
+    mensaje.classList.replace('top-[-5rem]', 'top-[5rem]');
+    setTimeout(() => {
+        mensaje.classList.replace('top-[5rem]', 'top-[-5rem]')
+    }, 3000);
 }
 
-//#region mensajes
+function displayTasksTable(tasks) {
+
+    tasks.forEach(task => {
+        inyect(task);
+    });
+}
+
+function inyect(task) {
+    console.log(task);
+    const row = document.createElement('tr');
+    row.className = 'hover:bg-slate-100 bg-slate-50 transition-all';
+    row.innerHTML = `
+    <td class="p-3">${task.id}</td>
+    <td class="p-3">${task.title}</td>
+    <td class="p-3">${task.description}</td>
+    <td class="p-3">${(task.completed) ? 'Finalizada' : 'Pendiente'}</td>
+    <td class="p-3">${task.priority}</td>
+    <td class="p-3">${task.tag}</td>
+    <td class="p-3">${(new Date(task.dueDate)).toISOString().substring(0, 10)}</td>
+    <td class="p-3"><button data-id=${task.id} class="bg-blue-500 hover:bg-blue-600 transition ease-in-out text-white py-1 px-3 rounded-md" name="editar">
+        Editar
+    </button></td>
+    <td class="p-3"><button data-id=${task.id} class="bg-red-500 hover:bg-red-600 transition ease-in-out text-white py-1 px-3 rounded-md" name="eliminar">
+        Eliminar    
+    </button></td>
+  `;
+    tablaBody.appendChild(row);
+}
+
 function clearTable() {
     const tableBody = document.getElementById('data-table-body');
     tableBody.innerHTML = '';
 }
 
-function showLoadingMessage() {
-    const message = document.getElementById('message');
-    message.innerHTML = 'Cargando...';
-    message.style.display = 'block';
-}
-
-function showNotFoundMessage() {
-    const message = document.getElementById('message');
-    message.innerHTML = 'No se encontraron Tareas/Task por realizar. ¡¿Bien hecho...?!';
-    message.style.display = 'block';
-}
-
-function hideMessage() {
-    const message = document.getElementById('message');
-    message.style.display = 'none';
-}
-//#endregion mensajes
-
-//#region show/hide new task
-
-
-
-//#endregion show/hide new task
-
-//#region Create NEW TASKS
-function initAddSaleButtonsHandler() {
-
-    document.getElementById('addSale').addEventListener('click', () => {
-        openAddSaleModal()
-    });
-
-    document.getElementById('modal-background').addEventListener('click', () => {
-        closeAddSaleModal();
-    });
-
-    document.getElementById('sale-form').addEventListener('submit', event => {
-        event.preventDefault();
-        processSubmitSale();
-    });
-}
-
 function processCreateTask() {
-    const title = document.getElementById('customer-name-field').value;
-    const desription = document.getElementById('videogame-name').options[document.getElementById('videogame-name').selectedIndex].text.split(' - ')[0];
-    const completed = document.getElementById('salesman-field').value;
-    const priority = document.getElementById('salesman-field').value;
-    const tag = document.getElementById('salesman-field').value;
-    const dueDate = document.getElementById('sale-date-field').value;
+    const title = document.getElementById('taskTitle').value;
+    const desription = document.getElementById('taskDetail').value;
+    const completed = document.getElementById('addState').value;
+    const priority = document.getElementById('addPrioridad').value;
+    const tag = document.getElementById('addTag').value;
+    const dueDate = document.getElementById('addLimitDate').value;
 
-    const taskToSave = new Task(
-        title,
-        desription,
-        completed,
-        priority,
-        tag,
-        dueDate,
-    );
-
-    console.log(taskToSave);
-    createSale(taskToSave);
+    if (
+        title !== '' ||
+        desription !== '' ||
+        completed !== '' ||
+        priority !== '' ||
+        tag !== '' ||
+        dueDate !== '') {
+        const taskToSave = new Task(
+            title,
+            desription,
+            ((completed === 'Pendiente') ? false : true),
+            priority,
+            tag,
+            dueDate,
+        );
+        message('bg-green-500', 'Tarea creada correctamente');
+        console.log(taskToSave);
+        createTask(taskToSave);
+        return;
+    }
+    message('bg-red-500', 'Llena los campos requeridos');
 }
 //#endregion Create NEW TASKS
+function processUpdateTask() {
+    const id = document.getElementById('id').value;
+    const title = document.getElementById('taskTitle').value;
+    const desription = document.getElementById('taskDetail').value;
+    const completed = document.getElementById('addState').value;
+    const priority = document.getElementById('addPrioridad').value;
+    const tag = document.getElementById('addTag').value;
+    const dueDate = document.getElementById('addLimitDate').value;
 
-//#region EDIT  tasks
-
-//#endregion EDIT  tasks
-
-//#region API's¿¿
-
-
-//#endregion API's¿¿
-
-//#region buttons
-//#region edit button
-function initEditTaskButtonHandler() {
-    document.querySelectorAll('.btn-edit').forEach(button => {
-        button.addEventListener('click', () => {
-            const taskId = button.getAttribute('idTask'); // Obtenemos el ID de la venta
-            console.log(taskId);
-            
-            //putTask(taskId); // Llamamos a la función para editar la venta
-        });
-    });
-}
-
-function putTask(taskId) {
-    const confirm = window.confirm(`¿Estás seguro de que deseas editar la venta ${taskId}?`);
-    if (confirm) {
-        fetchAPI(`https://653485e2e1b6f4c59046c7c7.mockapi.io/api/users/219209037/${taskId}`, 'PUT')
-            .then(() => {
-                //resetSales(); //FALTA traerlo
-                window.alert("Task editada.");
-            });
+    if (
+        title !== '' ||
+        desription !== '' ||
+        completed !== '' ||
+        priority !== '' ||
+        tag !== '' ||
+        dueDate !== '') {
+        const taskToSave = new Task(
+            title,
+            desription,
+            ((completed === 'Pendiente') ? false : true),
+            priority,
+            tag,
+            dueDate,
+        );
+        message('bg-green-500', 'Tarea actualizada correctamente');
+        console.log(taskToSave);
+        putTask(id,taskToSave);
+        return;
     }
-}
-//#endregion edit button
-
-//#region delete button
-function initDeleteSaleButtonHandler() {
-    document.querySelectorAll('.btn-delete').forEach(button => {
-        button.addEventListener('click', () => {
-            const taskId = button.getAttribute('idTask'); // Obtenemos el ID de la venta
-            console.log(taskId);
-            
-            //deleteSale(taskId); // Llamamos a la función para eleminar la venta
-        });
-    });
+    message('bg-red-500', 'Llena los campos requeridos');
 }
 
-function deleteSale(saleId) {
-    const confirm = window.confirm(`¿Estás seguro de que deseas eliminar la Tarea/Task? ${saleId}?`);
-    if (confirm) {
-        fetchAPI(`https://653485e2e1b6f4c59046c7c7.mockapi.io/api/users/219209037/${saleId}`, 'DELETE')
-            .then(() => {
-               // resetSales(); //FALTA traerlo
-                window.alert("Task eliminada.");
-            });
-    }
+async function createTask(task) {
+    const result = await fetchAPI('tasks', 'POST', task);
+    inyect(result);
 }
-//#endregion delete button
 
+async function deleteTask(id) {
+    await fetchAPI('tasks/' + id, 'DELETE');
+    clearTable();
+    const result = await fetchAPI('tasks', 'GET');
+    displayTasksTable(result);
+    message('bg-green-500','Tarea eliminada correctamente');
+}
 
-//#endregion buttons
+async function putTask(id,task){
+    await fetchAPI('tasks/'+id, 'PUT', task);
+    clearTable();
+    const result = await fetchAPI('tasks','GET');
+    displayTasksTable(result);
+}
+

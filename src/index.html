@@ -22,9 +22,12 @@
 
     </header>
     
-    <main class="p-8">
+    <main class="p-8 flex flex-col items-center">
         
-    
+        <div id="message" class="w-[400px] p-3 rounded-md text-center fixed top-[-5rem] transition-all ease-in-out duration-300 bg-green-500">
+            <p class="text-white uppercase text-xl"></p>
+        </div>
+
         <section id="section-venta" class="bg-gray-300 p-6 rounded-lg shadow-md">
 
             <form id="add-form" class="mt-4">
@@ -33,33 +36,32 @@
                 <div id="add-section" class="space-y-4 flex flex-col items-center">
                     <div class ="flex flex-col w-[250px]">
                         <label for="taskTitle" class="mb-2 block text-sm font-medium text-gray-700">Titulo del Task:</label>
-                        <input type="text" id="taskField" class="p-1 rounded-md add-field" required>
+                        <input type="text" id="taskTitle" class="p-1 rounded-md add-field" required>
                     </div>
 
                     <div class ="flex flex-col w-[250px]">
                         <label for="taskDetail" class="mt-1 mb-1 block text-sm font-medium text-gray-700">Detalles del Task:</label>
-                        <input type="text" id="taskField" class="p-1 rounded-md mt-1 mb-1 add-field" required>
+                        <input type="text" id="taskDetail" class="p-1 rounded-md mt-1 mb-1 add-field" required>
     
                         <select id="addState" class="p-1 rounded-md mt-1 mb-1 add-field">
                             <option value="" selected hidden>Estado de la tarea</option>
-                            <option value="pendiente">Pendiente</option>
-                            <option value="finalizada">Finalizada</option>
+                            <option value="Pendiente">Pendiente</option>
+                            <option value="Finalizada">Finalizada</option>
                         </select>
     
                         <select id="addPrioridad" class="p-1 rounded-md mt-1 mb-1 add-field">
                             <option value="" selected hidden>Prioridad de la tarea</option>
-                            <option value="baja">Baja</option>
-                            <option value="media">Media</option>
-                            <option value="alta">Alta</option>
+                            <option value="Baja">Baja</option>
+                            <option value="Media">Media</option>
+                            <option value="Alta">Alta</option>
                         </select>
     
                         <select id="addTag" class="p-1 rounded-md mt-1 mb-1 add-field">
                             <option value="" selected hidden>Tag de la Tarea</option>
-                            <option value="dfe">DFE 2023-2</option>
-                            <option value="personal">Personal</option>
-                            <option value="escolar">Escolar</option>
-                            <option value="laboral">Laboral</option>
-                            <option value="otra">Otra</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Escolar">Escolar</option>
+                            <option value="Laboral">Laboral</option>
+                            <option value="Otra">Otra</option>
                         </select>
                     </div>
 
@@ -69,7 +71,7 @@
                     </div>
 
                     <button type="submit" id="addTask"
-                        class="btn-action bg-green-500 hover:bg-green-600 transition ease-in-out text-white py-2 px-4 rounded w-[250px]">Agregar</button>
+                        class="btn-action bg-green-500 hover:bg-green-600 transition ease-in-out text-white py-2 px-4 rounded w-[250px]">Guardar</button>
                 </div>
             </form>
 
@@ -104,9 +106,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div id="message" class="mt-4">
-                    <p>Esperando lista de tareas...</p>
-                </div>
+                
             </div>
 
         </section>
