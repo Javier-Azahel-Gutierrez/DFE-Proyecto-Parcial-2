@@ -1,25 +1,30 @@
+import { fetchAPI } from "./shared/fetch-api.js";
+
+const result = await fetchAPI('tasks','GET');
+console.log(result);
+
+displayTasksTable(result);
+
 class Task {
-    constructor(id, titulo, tarea, state, prioridad, tag, limitDate){
-        this.id = id;
-        this.titulo = titulo;
-        this.tarea = tarea;
-        this.state = state;
-        this.prioridad = prioridad;
+    constructor(title, description, completed, priority, tag, dueDate){
+        this.title = title;
+        this.description = description;
+        this.completed = completed;
+        this.priority = priority;
         this.tag = tag;
-        this.limitDate = limitDate;
+        this.dueDate = dueDate;
     }
 }
 
 function mapAPIToTasks(data) {
     return data.map(item => {
         return new Task(
-            item.id,
-            item.titulo,
-            item.tarea,
-            item.state,
-            item.prioridad,
+            item.title,
+            item.description,
+            item.completed,
+            item.priority,
             item.tag,
-            new Date(item.limitDate),
+            (new Date(item.dueDate)).toISOString().substring(0,10),
         );
     });
 }
@@ -33,19 +38,19 @@ function displayTasksTable(tasks) {
         console.log(task);
         const row = document.createElement('tr');
         row.innerHTML = `
-        <td>${task.id}</td>
-        <td>${task.titulo}</td>
-        <td>${task.tarea}</td>
-        <td>${task.state}</td>
-        <td>${task.prioridad}</td>
-        <td>${task.tag}</td>
-        <td>${new Date(task.limitDate).toISOString().substring(0,10)}</td>
-        <td>
-          <button class="btn-edit" idTask="${task.id}">Eliminar</button>
-        </td>
-        <td>
-          <button class="btn-delete" idTask="${task.id}">Eliminar</button>
-        </td>
+        <td class="p-3">${task.id}</td>
+        <td class="p-3">${task.title}</td>
+        <td class="p-3">${task.decription}</td>
+        <td class="p-3">${task.completed}</td>
+        <td class="p-3">${task.proprity}</td>
+        <td class="p-3">${task.tag}</td>
+        <td class="p-3">${(new Date(task.dueDate)).toISOString().substring(0,10)}</td>
+        <td class="p-3"><button data=id=${task.id} class="bg-blue-500 hover:bg-blue-600 transition ease-in-out text-white py-1 px-3 rounded-md" name="editar">
+            Editar
+        </button></td>
+        <td class="p-3"><button data=id=${task.id} class="bg-red-500 hover:bg-red-600 transition ease-in-out text-white py-1 px-3 rounded-md" name="eliminar">
+            Elimin
+        ar</button></td>
       `;
         tablaBody.appendChild(row);
     });
@@ -79,11 +84,7 @@ function hideMessage() {
 
 //#region show/hide new task
 
-const showFilter = document.getElementById('newTask');
-showFilter.addEventListener("click", () => {
-    document.getElementById('add-section').style.display = "flex";
-    showFilter.style.display = "none";
-})
+
 
 //#endregion show/hide new task
 
@@ -105,27 +106,24 @@ function initAddSaleButtonsHandler() {
 }
 
 function processCreateTask() {
-    const idTarea = document.getElementById('videogame-name').value;
-    console.log(idVideoGame);
-    const titulo = document.getElementById('customer-name-field').value;
-    const tarea = document.getElementById('videogame-name').options[document.getElementById('videogame-name').selectedIndex].text.split(' - ')[0];
-    const state = document.getElementById('salesman-field').value;
-    const prioridad = document.getElementById('salesman-field').value;
+    const title = document.getElementById('customer-name-field').value;
+    const desription = document.getElementById('videogame-name').options[document.getElementById('videogame-name').selectedIndex].text.split(' - ')[0];
+    const completed = document.getElementById('salesman-field').value;
+    const priority = document.getElementById('salesman-field').value;
     const tag = document.getElementById('salesman-field').value;
-    const limitdate = document.getElementById('sale-date-field').value;
+    const dueDate = document.getElementById('sale-date-field').value;
 
     const taskToSave = new Task(
-        idTarea,
-        titulo,
-        tarea,
-        state,
-        prioridad,
+        title,
+        desription,
+        completed,
+        priority,
         tag,
-        limitdate,
+        dueDate,
     );
 
-    console.log(saleToSave);
-    createSale(saleToSave);
+    console.log(taskToSave);
+    createSale(taskToSave);
 }
 //#endregion Create NEW TASKS
 

@@ -1,7 +1,7 @@
-const apiURL = 'https://653485e2e1b6f4c59046c7c7.mockapi.io/api/';
+const apiURL = 'https://653485e2e1b6f4c59046c7c7.mockapi.io/api/users/219209037/';
 
 
-function fetchAPI(url, method = 'GET', data = null) {
+export async function fetchAPI(url, method = 'GET', data = null) {
 
   const headers = {
     'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ function fetchAPI(url, method = 'GET', data = null) {
     options.body = JSON.stringify(data);
   }
 
-  return fetch(url, options)
+  return await fetch(apiURL+url, options)
     .then(response => {
       if (!response.ok) {
         throw new Error('Error en la solicitud: ' + response.status);

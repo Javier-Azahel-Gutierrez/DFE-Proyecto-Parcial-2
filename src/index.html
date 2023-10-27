@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="./dist/output.css">
+    <title>Task's to manage R</title>
+</head>
+
+<body>
+    <header class="flex flex-col">
+        <div class="flex flex-row content-center">
+            <a id="logo" class="m-2">
+                <img src="https://cdn-icons-png.flaticon.com/128/2387/2387635.png" title="Logo" width=40px>
+            </a>
+            <h1 class="m-2 text-3xl font-bold mb-4">Tareas de JavieR Gutierrez</h1>
+        </div>
+        <div>
+            <h3 class="text-lg mb-8 m-2">La manera de no procrastinar</h3>
+        </div>
+
+    </header>
+    
+    <main class="p-8">
+        
+    
+        <section id="section-venta" class="bg-gray-300 p-6 rounded-lg shadow-md">
+
+            <form id="add-form" class="mt-4">
+                <input type="hidden" id="id">
+                <input type="hidden" id="editar">
+                <div id="add-section" class="space-y-4 flex flex-col items-center">
+                    <div class ="flex flex-col w-[250px]">
+                        <label for="taskTitle" class="mb-2 block text-sm font-medium text-gray-700">Titulo del Task:</label>
+                        <input type="text" id="taskField" class="p-1 rounded-md add-field" required>
+                    </div>
+
+                    <div class ="flex flex-col w-[250px]">
+                        <label for="taskDetail" class="mt-1 mb-1 block text-sm font-medium text-gray-700">Detalles del Task:</label>
+                        <input type="text" id="taskField" class="p-1 rounded-md mt-1 mb-1 add-field" required>
+    
+                        <select id="addState" class="p-1 rounded-md mt-1 mb-1 add-field">
+                            <option value="" selected hidden>Estado de la tarea</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="finalizada">Finalizada</option>
+                        </select>
+    
+                        <select id="addPrioridad" class="p-1 rounded-md mt-1 mb-1 add-field">
+                            <option value="" selected hidden>Prioridad de la tarea</option>
+                            <option value="baja">Baja</option>
+                            <option value="media">Media</option>
+                            <option value="alta">Alta</option>
+                        </select>
+    
+                        <select id="addTag" class="p-1 rounded-md mt-1 mb-1 add-field">
+                            <option value="" selected hidden>Tag de la Tarea</option>
+                            <option value="dfe">DFE 2023-2</option>
+                            <option value="personal">Personal</option>
+                            <option value="escolar">Escolar</option>
+                            <option value="laboral">Laboral</option>
+                            <option value="otra">Otra</option>
+                        </select>
+                    </div>
+
+                    <div class ="flex flex-col w-[250px]">
+                        <label for="addLimitDate" class="mb-2 block text-sm font-medium text-gray-700">Fecha limite:</label>
+                        <input type="date" id="addLimitDate" class="p-1 rounded-md add-field" required>
+                    </div>
+
+                    <button type="submit" id="addTask"
+                        class="btn-action bg-green-500 hover:bg-green-600 transition ease-in-out text-white py-2 px-4 rounded w-[250px]">Agregar</button>
+                </div>
+            </form>
+
+            <div class="my-8">
+                <div class="table-container">
+                    <table id="data-table" class="w-full border-collapse text-center">
+                        <thead class="bg-slate-200">
+                            <tr class="">
+                                <th class="p-3">ID Tarea</th>
+                                <th class="p-3">Titulo</th>
+                                <th class="p-3">Descripcion</th>
+                                <th class="p-3">Estado</th>
+                                <th class="p-3">Prioridad</th>
+                                <th class="p-3">Tag</th>
+                                <th class="p-3">Fecha limite</th>
+                                <th class="p-3">Editar</th>
+                                <th class="p-3">Eliminar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="data-table-body">
+                            <!-- <tr class="items-center hover:bg-slate-100 bg-slate-50 transition-all">
+                                <td class="p-3">1</td>
+                                <td class="p-3">Hola</td>
+                                <td class="p-3">Hola</td>
+                                <td class="p-3">Pendiente</td>
+                                <td class="p-3">Alta</td>
+                                <td class="p-3">Personal</td>
+                                <td class="p-3">2023-10-23</td>
+                                <td class="p-3"><button class="bg-blue-500 hover:bg-blue-600 transition ease-in-out text-white py-1 px-3 rounded-md">Editar</button></td>
+                                <td class="p-3"><button class="bg-red-500 hover:bg-red-600 transition ease-in-out text-white py-1 px-3 rounded-md">Eliminar</button></td>
+                            </tr> -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="message" class="mt-4">
+                    <p>Esperando lista de tareas...</p>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+<script type="module" src="./shared/fetch-api.js"></script>
+<script type="module" src="./script.js"></script>
+</body>
+
+</html>
